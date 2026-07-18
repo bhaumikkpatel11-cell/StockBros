@@ -1,1 +1,2 @@
-// Phase 1A: Dhan integration logic belongs here.
+export * from './dhanClient';
+export * from './errors';

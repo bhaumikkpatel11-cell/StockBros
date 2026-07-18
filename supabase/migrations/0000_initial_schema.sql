@@ -23,7 +23,8 @@ CREATE TABLE price_cache (
     low NUMERIC,
     close NUMERIC,
     volume BIGINT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE (symbol, date)
 );
 
 CREATE INDEX idx_price_cache_symbol_date ON price_cache(symbol, date);
