@@ -1,0 +1,1 @@
+ALTER TABLE symbols ADD COLUMN angel_one_symbol_token TEXT;
