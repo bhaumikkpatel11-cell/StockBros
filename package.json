@@ -8,10 +8,13 @@
     "start": "next start",
     "lint": "next lint",
     "sync-symbols": "tsx --env-file=.env.local --conditions react-server scripts/syncDhanSymbols.ts",
-    "fetch-sample": "tsx --env-file=.env.local --conditions react-server scripts/fetchSampleData.ts"
+    "fetch-sample": "tsx --env-file=.env.local --conditions react-server scripts/fetchSampleData.ts",
+    "test": "jest"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.7",
+    "@types/ws": "^8.18.1",
     "csv-parse": "^7.0.1",
     "lightweight-charts": "^4.2.3",
     "next": "14.2.35",
@@ -19,9 +22,12 @@
     "react": "^18",
     "react-dom": "^18",
     "server-only": "^0.0.1",
-    "totp-generator": "^2.0.1"
+    "totp-generator": "^2.0.1",
+    "ws": "^8.21.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/otplib": "^7.0.0",
     "@types/react": "^18",
@@ -30,8 +36,10 @@
     "dotenv": "^17.4.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
+    "jest": "^30.4.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "ts-jest": "^29.4.11",
     "tsx": "^4.23.1",
     "typescript": "^5"
   }
