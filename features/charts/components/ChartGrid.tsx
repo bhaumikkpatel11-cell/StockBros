@@ -1,0 +1,83 @@
+'use client';
+import { useState } from 'react';
+import { PriceChart } from './PriceChart';
+import { resampleDailyToWeekly } from '../utils';
+import { PriceBar } from '@/lib/types';
+
+interface ChartData {
+  symbol: string;
+  bars: PriceBar[];
+}
+
+interface ChartGridProps {
+  charts: ChartData[];
+}
+
+export function ChartGrid({ charts }: ChartGridProps) {
+  const [timeframe, setTimeframe] = useState<'1D' | '1W'>('1D');
+  const [ema, setEma] = useState<'off' | 10 | 20>('off');
+
+  return (
+    <div className="flex flex-col gap-6 w-full h-full p-4 md:p-6 bg-black">
+      {/* Global Control Bar */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-neutral-900 border border-neutral-800 p-4 rounded-xl shadow-lg gap-4">
+        <h2 className="text-xl font-bold text-white tracking-tight">Market Overview</h2>
+        
+        <div className="flex flex-wrap gap-4">
+          <div className="flex bg-neutral-950 border border-neutral-800 rounded-lg p-1">
+            <button 
+              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${timeframe === '1D' ? 'bg-neutral-800 text-white shadow-sm' : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800/50'}`}
+              onClick={() => setTimeframe('1D')}
+            >
+              Daily
+            </button>
+            <button 
+              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${timeframe === '1W' ? 'bg-neutral-800 text-white shadow-sm' : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800/50'}`}
+              onClick={() => setTimeframe('1W')}
+            >
+              Weekly
+            </button>
+          </div>
+          
+          <div className="flex bg-neutral-950 border border-neutral-800 rounded-lg p-1 items-center gap-1">
+            <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider px-2">EMA</span>
+            <button 
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${ema === 'off' ? 'bg-neutral-800 text-white shadow-sm' : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800/50'}`}
+              onClick={() => setEma('off')}
+            >
+              Off
+            </button>
+            <button 
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${ema === 10 ? 'bg-neutral-800 text-blue-400 shadow-sm' : 'text-neutral-400 hover:text-blue-400/70 hover:bg-neutral-800/50'}`}
+              onClick={() => setEma(10)}
+            >
+              10
+            </button>
+            <button 
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${ema === 20 ? 'bg-neutral-800 text-orange-400 shadow-sm' : 'text-neutral-400 hover:text-orange-400/70 hover:bg-neutral-800/50'}`}
+              onClick={() => setEma(20)}
+            >
+              20
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        {charts.map((chart) => {
+          const displayBars = timeframe === '1W' ? resampleDailyToWeekly(chart.bars) : chart.bars;
+          return (
+            <PriceChart 
+              key={chart.symbol}
+              symbol={chart.symbol}
+              bars={displayBars}
+              timeframe={timeframe}
+              showEma={ema}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
